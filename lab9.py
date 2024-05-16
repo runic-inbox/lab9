@@ -2,22 +2,11 @@ import matplotlib.pyplot as plt
 import streamlit as st
 import csv
 
-st.header('Данные пассажиров Титаника')
-st.image('Titanic_in_color.png')
+def counter(ls, survived='Любое', sex='Любой'):
+    min_1cl, min_2cl, min_3cl = 200, 200, 200  # Гарантированно завышенные значения
+    max_1cl, max_2cl, max_3cl = 0, 0, 0  # Гарантированно заниженные значения
 
-st.write('Для просмотра данных только по спасенным или погибщим пассажирам, выберите соответствующий пункт из списка')
-survived = st.selectbox('Значение поля Survived:', ['Любое', 'Спасен (1)', 'Погиб (0)'])
-
-st.write('Для просмотра данных только по мужчинам или женщинам, выберите соответствующий пункт из списка')
-sex = st.selectbox('Значение поля Sex:', ['Любой', 'Мужчина (male)', 'Женщина (female)'])
-
-####################
-min_1cl, min_2cl, min_3cl = 200, 200, 200  # Гарантированно завышенные значения
-max_1cl, max_2cl, max_3cl = 0, 0, 0  # Гарантированно заниженные значения
-
-with open('data.csv') as file:
-    reader = csv.DictReader(file)
-    for row in reader:
+    for row in ls:
         if row['Age'] == '':
             continue  # Если возраст не указан, считать нечего.
 
@@ -48,7 +37,23 @@ with open('data.csv') as file:
             max_3cl = max(max_3cl, age)
 
         else:
-            st.write('Что-то пошло не так. Обнаружен неопознанный класс обслуживания клиентов.')
+            st.write('Обнаружен неопознанный класс обслуживания клиентов.')
+
+    return min_1cl, min_2cl, min_3cl, max_1cl, max_2cl, max_3cl
+
+
+st.header('Данные пассажиров Титаника')
+st.image('Titanic_in_color.png')
+
+st.write('Для просмотра данных только по спасенным или погибщим пассажирам, выберите соответствующий пункт из списка')
+survived = st.selectbox('Значение поля Survived:', ['Любое', 'Спасен (1)', 'Погиб (0)'])
+
+st.write('Для просмотра данных только по мужчинам или женщинам, выберите соответствующий пункт из списка')
+sex = st.selectbox('Значение поля Sex:', ['Любой', 'Мужчина (male)', 'Женщина (female)'])
+
+with open('data.csv') as file:
+    reader = csv.DictReader(file)
+    min_1cl, min_2cl, min_3cl, max_1cl, max_2cl, max_3cl = counter(reader, survived, sex)
 
 ####################
 
