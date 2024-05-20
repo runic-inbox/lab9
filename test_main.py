@@ -5,34 +5,34 @@ def test_true():
 
 
 ls = (
-    {'Age': '23', 'Survived': '0', 'Sex': 'female', 'Pclass': '1'},
-    {'Age': '23', 'Survived': '0', 'Sex': 'female', 'Pclass': '2'},
-    {'Age': '23', 'Survived': '0', 'Sex': 'female', 'Pclass': '3'},
+    {'Age': '11', 'Survived': '0', 'Sex': 'female'},
+    {'Age': '22', 'Survived': '0', 'Sex': 'female'},
+    {'Age': '', 'Survived': '0', 'Sex': 'female'},
 
-    {'Age': '23', 'Survived': '0', 'Sex': 'male', 'Pclass': '1'},
-    {'Age': '23', 'Survived': '0', 'Sex': 'male', 'Pclass': '2'},
-    {'Age': '23', 'Survived': '0', 'Sex': 'male', 'Pclass': '3'},
+    {'Age': '33', 'Survived': '0', 'Sex': 'male'},
+    {'Age': '44', 'Survived': '0', 'Sex': 'male'},
+    {'Age': '', 'Survived': '0', 'Sex': 'male'},
 
-    {'Age': '23', 'Survived': '1', 'Sex': 'female', 'Pclass': '1'},
-    {'Age': '23', 'Survived': '1', 'Sex': 'female', 'Pclass': '2'},
-    {'Age': '23', 'Survived': '1', 'Sex': 'female', 'Pclass': '3'},
+    {'Age': '55', 'Survived': '1', 'Sex': 'female'},
+    {'Age': '66', 'Survived': '1', 'Sex': 'female'},
+    {'Age': '', 'Survived': '1', 'Sex': 'female'},
 
-    {'Age': '23', 'Survived': '1', 'Sex': 'male', 'Pclass': '1'},
-    {'Age': '23', 'Survived': '1', 'Sex': 'male', 'Pclass': '2'},
-    {'Age': '23', 'Survived': '1', 'Sex': 'male', 'Pclass': '3'}
+    {'Age': '77', 'Survived': '1', 'Sex': 'male'},
+    {'Age': '88', 'Survived': '1', 'Sex': 'male'},
+    {'Age': '', 'Survived': '1', 'Sex': 'male'}
 )
 
 def test_counter():
-    assert counter(ls) == (23, 23, 23, 23, 23, 23)
+    assert counter(ls) == (11, 88)
 
 def test_counter_sex_female():
-    assert counter(ls, sex='female') == (23, 23, 23, 23, 23, 23)
+    assert counter(ls, sex='Женщина (female)') == (11, 66)
 
 def test_counter_sex_male():
-    assert counter(ls, sex='male') == (23, 23, 23, 23, 23, 23)
+    assert counter(ls, sex='Мужчина (male)') == (33, 88)
 
 def test_counter_survived_0():
-    assert counter(ls, survived='0') == (23, 23, 23, 23, 23, 23)
+    assert counter(ls, survived='Погиб (0)') == (11, 44)
 
 def test_counter_survived_1():
-    assert counter(ls, survived='1') == (23, 23, 23, 23, 23, 23)
+    assert counter(ls, survived='Спасен (1)') == (55, 88)

@@ -2,11 +2,11 @@ import matplotlib.pyplot as plt
 import streamlit as st
 import csv
 
-def counter(ls, survived='Любое', sex='Любой'):
-    min_1cl, min_2cl, min_3cl = 200, 200, 200  # Гарантированно завышенные значения
-    max_1cl, max_2cl, max_3cl = 0, 0, 0  # Гарантированно заниженные значения
+def counter(dc, survived='Любое', sex='Любой'):
+    min_age = 200  # Гарантированно завышенное значение
+    max_age = 0  # Гарантированно заниженное значение
 
-    for row in ls:
+    for row in dc:
         if row['Age'] == '':
             continue  # Если возраст не указан, считать нечего.
 
@@ -24,22 +24,10 @@ def counter(ls, survived='Любое', sex='Любой'):
 
         age = float(row['Age'])
 
-        if row['Pclass'] == '1':
-            min_1cl = min(min_1cl, age)
-            max_1cl = max(max_1cl, age)
+        min_age = min(min_age, age)
+        max_age = max(max_age, age)
 
-        elif row['Pclass'] == '2':
-            min_2cl = min(min_2cl, age)
-            max_2cl = max(max_2cl, age)
-
-        elif row['Pclass'] == '3':
-            min_3cl = min(min_3cl, age)
-            max_3cl = max(max_3cl, age)
-
-        else:
-            st.write('Обнаружен неопознанный класс обслуживания клиентов.')
-
-    return min_1cl, min_2cl, min_3cl, max_1cl, max_2cl, max_3cl
+    return min_age, max_age
 
 
 st.header('Данные пассажиров Титаника')
@@ -53,24 +41,21 @@ sex = st.selectbox('Значение поля Sex:', ['Любой', 'Мужчи�
 
 with open('data.csv') as file:
     reader = csv.DictReader(file)
-    min_1cl, min_2cl, min_3cl, max_1cl, max_2cl, max_3cl = counter(reader, survived, sex)
+    min_age, max_age = counter(reader, survived, sex)
 
-####################
-
-pclass = ['1 класс', '2 класс', '3 класс']
-age_min = [min_1cl, min_2cl, min_3cl]
-age_max = [max_1cl, max_2cl, max_3cl]
 data = {
-    'Класс обслуживания': pclass,
-    'Минимальный возраст': age_min,
-    'Максимальный возраст': age_max
+    'Тип результата': ('минимум', 'максимум'),
+    'Значение возраста': (min_age, max_age)
 }
 st.table(data)
 
+type_return = ['минимум', 'максимум']
+age = [min_age, max_age]
+
 fig = plt.figure(figsize=(8, 3))
-plt.bar(pclass, age_max, bottom=age_min)
-plt.xlabel('Значение поля Pclass')
+plt.bar(type_return, age)
+plt.xlabel('Тип результата')
 plt.ylabel('Возраст (поле Age)')
-plt.title('Возраст пассажиров по классам обслуживания')
+plt.title('Возраст пассажиров')
 
 st.pyplot(fig)
